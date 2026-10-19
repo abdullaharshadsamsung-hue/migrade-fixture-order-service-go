@@ -55,6 +55,15 @@ func New(limitPerMinute int) *Catalog {
 	}
 }
 
+// NewFromURL is the constructor used by the routers. It keeps the
+// signature of the original Redis-backed constructor so callers need not
+// change; redisURL is currently unused because this implementation is
+// in-process (see MIGRATION_NOTE above). It never returns an error.
+func NewFromURL(redisURL string, limitPerMinute int) (*Catalog, error) {
+	_ = redisURL
+	return New(limitPerMinute), nil
+}
+
 // PriceOf returns the unit price of product. The boolean is false when the
 // product has no price.
 func (c *Catalog) PriceOf(_ context.Context, product string) (float64, bool, error) {
