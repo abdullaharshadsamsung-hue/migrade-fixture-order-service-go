@@ -111,7 +111,7 @@ var ordersSchema = []string{
 // MySQL syntax is intentional here: this database is MySQL, not Postgres.
 var legacySchema = []string{
 	`CREATE TABLE IF NOT EXISTS customer_credit (
-		customer_id  INTEGER NOT NULL AUTO_INCREMENT,
+		customer_id  INTEGER NOT NULL,
 		credit_limit NUMERIC(10, 2) NOT NULL,
 		used         NUMERIC(10, 2) NOT NULL,
 		PRIMARY KEY (customer_id)
