@@ -62,10 +62,17 @@ func configureAPI(ctx context.Context, cfg config.Config) error {
 		return fmt.Errorf("events: %w", err)
 	}
 
+	cat, err := catalog.NewFromURL(cfg.RedisURL, cfg.RateLimitPerMinute)
+	if err != nil {
+		_ = auditLog.Close(ctx)
+		_ = db.Close()
+		return fmt.Errorf("catalog: %w", err)
+	}
+
 	httpapi.Configure(httpapi.Deps{
 		Orders:  db,
 		Credits: httpapi.NewSQLCreditStore(db),
-		Catalog: catalog.New(cfg.RateLimitPerMinute),
+		Catalog: cat,
 		Audit:   auditLog,
 		Events:  pub,
 	})
